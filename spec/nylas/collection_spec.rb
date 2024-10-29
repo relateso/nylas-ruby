@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe Nylas::Collection do
+describe NylasV2::Collection do
   def example_instance_json
     '{ "id": "1234" }'
   end
@@ -131,7 +131,7 @@ describe Nylas::Collection do
   describe "#where" do
     it "raises a NotImplementedError stating the model is not searchable when the model is not searchable" do
       collection = described_class.new(model: NonFilterableModel, api: api)
-      expect { collection.where(id: "1234") }.to raise_error(Nylas::ModelNotFilterableError)
+      expect { collection.where(id: "1234") }.to raise_error(NylasV2::ModelNotFilterableError)
     end
   end
 
@@ -139,7 +139,7 @@ describe Nylas::Collection do
     it "sends the data to the appropriate endpoint using a post"
     it "Raises a not implemented error if the model is not creatable" do
       collection = described_class.new(model: NotCreatableModel, api: api)
-      expect { collection.create(string: "1234") }.to raise_error(Nylas::ModelNotCreatableError)
+      expect { collection.create(string: "1234") }.to raise_error(NylasV2::ModelNotCreatableError)
     end
   end
 
@@ -168,26 +168,26 @@ describe Nylas::Collection do
 
   describe "HTTP errors" do
     http_codes_errors = {
-      400 => Nylas::InvalidRequest,
-      401 => Nylas::UnauthorizedRequest,
-      402 => Nylas::MessageRejected,
-      403 => Nylas::AccessDenied,
-      404 => Nylas::ResourceNotFound,
-      405 => Nylas::MethodNotAllowed,
-      410 => Nylas::ResourceRemoved,
-      418 => Nylas::TeapotError,
-      422 => Nylas::MailProviderError,
-      429 => Nylas::SendingQuotaExceeded,
-      500 => Nylas::InternalError,
-      501 => Nylas::EndpointNotYetImplemented,
-      502 => Nylas::BadGateway,
-      503 => Nylas::ServiceUnavailable,
-      504 => Nylas::RequestTimedOut
+      400 => NylasV2::InvalidRequest,
+      401 => NylasV2::UnauthorizedRequest,
+      402 => NylasV2::MessageRejected,
+      403 => NylasV2::AccessDenied,
+      404 => NylasV2::ResourceNotFound,
+      405 => NylasV2::MethodNotAllowed,
+      410 => NylasV2::ResourceRemoved,
+      418 => NylasV2::TeapotError,
+      422 => NylasV2::MailProviderError,
+      429 => NylasV2::SendingQuotaExceeded,
+      500 => NylasV2::InternalError,
+      501 => NylasV2::EndpointNotYetImplemented,
+      502 => NylasV2::BadGateway,
+      503 => NylasV2::ServiceUnavailable,
+      504 => NylasV2::RequestTimedOut
     }
 
     http_codes_errors.each do |code, error|
       it "raises error if API returns #{error} with #{code}" do
-        api = Nylas::API.new
+        api = NylasV2::API.new
         model = instance_double("Model")
         allow(model).to receive(:searchable?).and_return(true)
         allow(model).to receive(:resources_path)

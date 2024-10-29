@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Nylas::Account do
+describe NylasV2::Account do
   it "is not filterable" do
     expect(described_class).not_to be_filterable
   end
@@ -42,7 +42,7 @@ describe Nylas::Account do
   end
 
   it "can be downgraded" do
-    api = instance_double("Nylas::API", execute: { success: true }, app_id: "app-987")
+    api = instance_double("NylasV2::API", execute: { success: true }, app_id: "app-987")
     account = described_class.from_json('{ "id": "acc-1234" }', api: api)
 
     expect(account.downgrade).to be_truthy
@@ -56,7 +56,7 @@ describe Nylas::Account do
   end
 
   it "can be upgraded" do
-    api = instance_double("Nylas::API", execute: { success: true }, app_id: "app-987")
+    api = instance_double("NylasV2::API", execute: { success: true }, app_id: "app-987")
     account = described_class.from_json('{ "id": "acc-1234" }', api: api)
 
     expect(account.upgrade).to be_truthy
@@ -70,7 +70,7 @@ describe Nylas::Account do
   end
 
   it "can revoke all tokens" do
-    api = instance_double("Nylas::API", execute: { success: true }, app_id: "app-987")
+    api = instance_double("NylasV2::API", execute: { success: true }, app_id: "app-987")
     account = described_class.from_json('{ "id": "acc-1234" }', api: api)
     access_token = "some_access_token"
 

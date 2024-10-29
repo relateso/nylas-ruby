@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Nylas::RoomResource do
+describe NylasV2::RoomResource do
   it "is not creatable" do
     expect(described_class).not_to be_creatable
   end
@@ -49,8 +49,8 @@ describe Nylas::RoomResource do
 
   context "when getting" do
     it "makes a call to the /resources endpoint" do
-      api = instance_double(Nylas::API, execute: "{}")
-      resource = Nylas::Collection.new(model: described_class, api: api)
+      api = instance_double(NylasV2::API, execute: "{}")
+      resource = NylasV2::Collection.new(model: described_class, api: api)
 
       api.execute(resource.to_be_executed)
 

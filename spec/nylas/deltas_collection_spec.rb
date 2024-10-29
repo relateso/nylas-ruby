@@ -2,10 +2,10 @@
 
 require "spec_helper"
 
-describe Nylas::DeltasCollection do
+describe NylasV2::DeltasCollection do
   describe "#find_each" do
     it "supports iterating until the responses are empty" do
-      api = instance_double(Nylas::API)
+      api = instance_double(NylasV2::API)
       allow(api).to receive(:execute)
         .with(path: "/delta", method: :get, query: { cursor: "1", limit: 100, offset: 0 }, headers: {})
         .and_return(deltas: [{ object: "draft" }], cursor_start: "1", cursor_end: "2")
@@ -27,7 +27,7 @@ describe Nylas::DeltasCollection do
 
   describe "#latest" do
     it "retrieves the results for the cursor that comes from the latest_cursor end point" do
-      api = instance_double(Nylas::API)
+      api = instance_double(NylasV2::API)
       allow(api).to receive(:execute)
         .with(path: "/delta/latest_cursor", method: :post)
         .and_return(cursor: "4")

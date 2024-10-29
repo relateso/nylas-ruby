@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe Nylas::Draft do
+describe NylasV2::Draft do
   it "is not filterable" do
     expect(described_class).not_to be_filterable
   end
@@ -30,8 +30,8 @@ describe Nylas::Draft do
   describe "update" do
     context "with `files` key" do
       it "if `files` present, remove from the payload and sets the proper file_ids key" do
-        api = instance_double(Nylas::API, execute: JSON.parse("{}"))
-        file = Nylas::File.new(id: "abc-123")
+        api = instance_double(NylasV2::API, execute: JSON.parse("{}"))
+        file = NylasV2::File.new(id: "abc-123")
         data = {
           id: "draft-1234"
         }
@@ -56,7 +56,7 @@ describe Nylas::Draft do
 
     context "when `files` key does not exists" do
       it "does not set the file_ids key or make any further changes to the payload" do
-        api = instance_double(Nylas::API, execute: JSON.parse("{}"))
+        api = instance_double(NylasV2::API, execute: JSON.parse("{}"))
         data = {
           id: "draft-1234"
         }
@@ -83,7 +83,7 @@ describe Nylas::Draft do
         id: "draft-1234",
         version: 1
       }
-      api = instance_double(Nylas::API, execute: expected_response)
+      api = instance_double(NylasV2::API, execute: expected_response)
       data = {
         id: "draft-1234",
         version: 0
@@ -102,8 +102,8 @@ describe Nylas::Draft do
   describe "#create" do
     context "when `files` key exists" do
       it "removes `files` from the payload and sets the proper file_ids key" do
-        api = instance_double(Nylas::API, execute: JSON.parse("{}"))
-        file = Nylas::File.new(id: "abc-123")
+        api = instance_double(NylasV2::API, execute: JSON.parse("{}"))
+        file = NylasV2::File.new(id: "abc-123")
         data = {
           id: "draft-1234",
           files: [file]
@@ -129,7 +129,7 @@ describe Nylas::Draft do
 
     context "when `files` key does not exists" do
       it "does nothing" do
-        api = instance_double(Nylas::API, execute: JSON.parse("{}"))
+        api = instance_double(NylasV2::API, execute: JSON.parse("{}"))
         data = {
           id: "draft-1234"
         }
@@ -155,8 +155,8 @@ describe Nylas::Draft do
   describe "save" do
     context "when `files` key exists" do
       it "removes `files` from the payload and sets the proper file_ids key" do
-        api = instance_double(Nylas::API, execute: JSON.parse("{}"))
-        file = Nylas::File.new(id: "abc-123")
+        api = instance_double(NylasV2::API, execute: JSON.parse("{}"))
+        file = NylasV2::File.new(id: "abc-123")
         data = {
           id: "draft-1234",
           files: [file]
@@ -182,7 +182,7 @@ describe Nylas::Draft do
 
     context "when `files` key does not exists" do
       it "does nothing" do
-        api = instance_double(Nylas::API, execute: JSON.parse("{}"))
+        api = instance_double(NylasV2::API, execute: JSON.parse("{}"))
         data = {
           id: "draft-1234"
         }
@@ -209,7 +209,7 @@ describe Nylas::Draft do
         id: "draft-1234",
         version: 1
       }
-      api = instance_double(Nylas::API, execute: expected_response)
+      api = instance_double(NylasV2::API, execute: expected_response)
       data = {
         id: "draft-1234"
       }
@@ -226,7 +226,7 @@ describe Nylas::Draft do
 
   describe "#send!" do
     it "saves and sends the draft" do
-      api = instance_double(Nylas::API)
+      api = instance_double(NylasV2::API)
       draft = described_class.from_hash({ id: "draft-1234", "version": 5 }, api: api)
       update_json = draft.to_json
       allow(api).to receive(:execute).and_return({})
@@ -250,7 +250,7 @@ describe Nylas::Draft do
     end
 
     it "includes tracking when sending the draft" do
-      api = instance_double(Nylas::API)
+      api = instance_double(NylasV2::API)
       draft = described_class.from_hash({ id: "draft-1234", "version": 5 }, api: api)
       draft.tracking = { opens: true, links: true, thread_replies: true, payload: "this is a payload" }
       update_json = draft.to_json
@@ -269,7 +269,7 @@ describe Nylas::Draft do
 
   describe ".from_json" do
     it "Deserializes all the attributes into Ruby objects" do
-      api = instance_double(Nylas::API)
+      api = instance_double(NylasV2::API)
       data = { id: "drft-592", version: 0, object: "draft", account_id: "acc-9987", thread_id: "thread-1234",
                reply_to_message_id: "mess-1234", date: 1_513_276_982,
                to: [{ email: "to@example.com", name: "To Example" }],

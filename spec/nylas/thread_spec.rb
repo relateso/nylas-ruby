@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe Nylas::Thread do
+describe NylasV2::Thread do
   it "is filterable" do
     expect(described_class).to be_filterable
   end
@@ -16,7 +16,7 @@ describe Nylas::Thread do
   end
 
   it "can be deserialized from JSON" do
-    api = instance_double(Nylas::API)
+    api = instance_double(NylasV2::API)
     json = JSON.dump(id: "thread-2345", account_id: "acc-1234", draft_ids: ["dra-987"],
                      first_message_timestamp: 1_510_080_143, has_attachments: false,
                      labels: [{ display_name: "All Mail", id: "label-all-mail", name: "all" },
@@ -79,7 +79,7 @@ describe Nylas::Thread do
   describe "update_folder" do
     it "moves thread to new `folder`" do
       folder_id = "9999"
-      api = instance_double(Nylas::API, execute: "{}")
+      api = instance_double(NylasV2::API, execute: "{}")
       thread = described_class.from_json('{ "id": "thread-1234" }', api: api)
       allow(api).to receive(:execute)
 
@@ -96,7 +96,7 @@ describe Nylas::Thread do
 
   describe "#update" do
     it "let's you set the starred, unread, folder, and label ids" do
-      api =  instance_double(Nylas::API, execute: {})
+      api =  instance_double(NylasV2::API, execute: {})
       thread = described_class.from_json('{ "id": "thread-1234" }', api: api)
 
       thread.update(
@@ -120,7 +120,7 @@ describe Nylas::Thread do
     end
 
     it "raises an argument error if the data has any keys that aren't allowed to be updated" do
-      api =  instance_double(Nylas::API, execute: "{}")
+      api =  instance_double(NylasV2::API, execute: "{}")
       thread = described_class.from_json('{ "id": "thread-1234" }', api: api)
       expect do
         thread.update(subject: "A new subject!")

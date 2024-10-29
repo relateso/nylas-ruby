@@ -3,7 +3,7 @@
 require "simplecov"
 SimpleCov.start
 
-require "nylas"
+require "nylas_v2"
 require "pry"
 require "webmock/rspec"
 require "rspec-json_matcher"
@@ -23,7 +23,7 @@ end
 # Illustrates all the types and such a model can be built out of. Used for testing the generic Model
 # functionality without conflating it with actual Models
 class FullModel
-  include Nylas::Model
+  include NylasV2::Model
   self.creatable = true
   self.showable = true
   self.listable = true
@@ -57,7 +57,7 @@ class FullModel
 end
 
 class NotCreatableModel
-  include Nylas::Model
+  include NylasV2::Model
   self.resources_path = "/not_creatable_collection"
 
   attribute :id, :string
@@ -75,7 +75,7 @@ class NotCreatableModel
 end
 
 class NotUpdatableModel
-  include Nylas::Model
+  include NylasV2::Model
   self.resources_path = "/not_updatable_collection"
 
   attribute :id, :string
@@ -93,7 +93,7 @@ class NotUpdatableModel
 end
 
 class NonFilterableModel < FullModel
-  include Nylas::Model
+  include NylasV2::Model
   self.resources_path = "/non_filterable_collection"
 
   attribute :id, :string

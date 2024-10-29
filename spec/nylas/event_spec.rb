@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-describe Nylas::Event do
+describe NylasV2::Event do
   describe ".from_json" do
     it "Deserializes all the attributes into Ruby objects" do
-      api = instance_double(Nylas::API)
+      api = instance_double(NylasV2::API)
       data = {
         id: "event-8766",
         object: "event",
@@ -74,7 +74,7 @@ describe Nylas::Event do
 
   describe "busy?" do
     it "returns true when busy attribute from API return true" do
-      api = instance_double(Nylas::API)
+      api = instance_double(NylasV2::API)
       data = {
         account_id: "acc-1234",
         busy: true,
@@ -87,7 +87,7 @@ describe Nylas::Event do
     end
 
     it "returns false when busy attribute from API return false" do
-      api = instance_double(Nylas::API)
+      api = instance_double(NylasV2::API)
       data = {
         account_id: "acc-1234",
         busy: false,
@@ -102,7 +102,7 @@ describe Nylas::Event do
 
   describe "#read_only?" do
     it "returns true when read_only attribute from API return true" do
-      api = instance_double(Nylas::API)
+      api = instance_double(NylasV2::API)
       data = {
         account_id: "acc-1234",
         read_only: true,
@@ -115,7 +115,7 @@ describe Nylas::Event do
     end
 
     it "returns false when read_only attribute from API return false" do
-      api = instance_double(Nylas::API)
+      api = instance_double(NylasV2::API)
       data = {
         account_id: "acc-1234",
         read_only: false,
@@ -130,7 +130,7 @@ describe Nylas::Event do
 
   describe "#rsvp" do
     it "calls `Rsvp` with the given status and flag to notify_participants" do
-      api = instance_double(Nylas::API)
+      api = instance_double(NylasV2::API)
       data = {
         id: "event-123",
         account_id: "acc-1234",
@@ -138,12 +138,12 @@ describe Nylas::Event do
         calendar_id: "cal-0987"
       }
       rsvp = instance_double("Rsvp", save: nil)
-      allow(Nylas::Rsvp).to receive(:new).and_return(rsvp)
+      allow(NylasV2::Rsvp).to receive(:new).and_return(rsvp)
       event = described_class.from_json(JSON.dump(data), api: api)
 
       event.rsvp(:yes, notify_participants: true)
 
-      expect(Nylas::Rsvp).to have_received(:new).with(
+      expect(NylasV2::Rsvp).to have_received(:new).with(
         api: api,
         status: :yes,
         event_id: "event-123",
@@ -157,7 +157,7 @@ describe Nylas::Event do
   describe "account_id" do
     context "when saving" do
       it "is excluded from payload" do
-        api = instance_double(Nylas::API)
+        api = instance_double(NylasV2::API)
         allow(api).to receive(:execute).and_return({})
         data = {
           id: "event-id",
@@ -185,7 +185,7 @@ describe Nylas::Event do
   describe "object" do
     context "when saving" do
       it "is excluded from payload" do
-        api = instance_double(Nylas::API)
+        api = instance_double(NylasV2::API)
         allow(api).to receive(:execute).and_return({})
         data = {
           id: "event-id",
@@ -211,7 +211,7 @@ describe Nylas::Event do
   describe "id" do
     context "when saving" do
       it "is excluded from payload" do
-        api = instance_double(Nylas::API)
+        api = instance_double(NylasV2::API)
         allow(api).to receive(:execute).and_return({})
         data = {
           id: "event-id",
@@ -236,7 +236,7 @@ describe Nylas::Event do
   describe "notify_participants" do
     context "when creating" do
       it "sends notify_participants in query params" do
-        api = instance_double(Nylas::API)
+        api = instance_double(NylasV2::API)
         allow(api).to receive(:execute).and_return({})
         data = {
           account_id: "acc-1234",
@@ -262,7 +262,7 @@ describe Nylas::Event do
       end
 
       it "sends nothing when `notify_participants` is not set" do
-        api = instance_double(Nylas::API)
+        api = instance_double(NylasV2::API)
         allow(api).to receive(:execute).and_return({})
         data = {
           account_id: "acc-1234",
@@ -287,7 +287,7 @@ describe Nylas::Event do
 
     context "when updating" do
       it "sends notify_participants in query params" do
-        api = instance_double(Nylas::API)
+        api = instance_double(NylasV2::API)
         allow(api).to receive(:execute)
         data = {
           id: "event-8766",
@@ -313,7 +313,7 @@ describe Nylas::Event do
       end
 
       it "sends nothing when `notify_participants` is not set" do
-        api = instance_double(Nylas::API)
+        api = instance_double(NylasV2::API)
         allow(api).to receive(:execute)
         data = {
           id: "event-8766",
@@ -338,7 +338,7 @@ describe Nylas::Event do
 
     context "when deleting" do
       it "sends notify_participants in query params" do
-        api = instance_double(Nylas::API)
+        api = instance_double(NylasV2::API)
         allow(api).to receive(:execute)
         data = {
           id: "event-8766",
@@ -362,7 +362,7 @@ describe Nylas::Event do
       end
 
       it "sends nothing when `notify_participants` is not set" do
-        api = instance_double(Nylas::API)
+        api = instance_double(NylasV2::API)
         allow(api).to receive(:execute)
         data = {
           id: "event-8766",

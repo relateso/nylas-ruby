@@ -3,7 +3,7 @@
 require "spec_helper"
 require "webmock/rspec"
 
-describe Nylas::HttpClient do
+describe NylasV2::HttpClient do
   let(:full_json) do
     '{"snippet":"\u26a1\ufe0f Some text \ud83d","starred":false,"subject":"Updates"}'
   end
@@ -17,7 +17,7 @@ describe Nylas::HttpClient do
 
     it "raises if the JSON is unable to be deserialized" do
       nylas = described_class.new(app_id: "id", app_secret: "secret", access_token: "token")
-      expect { nylas.parse_response("{{") }.to raise_error(Nylas::JsonParseError)
+      expect { nylas.parse_response("{{") }.to raise_error(NylasV2::JsonParseError)
     end
   end
 
@@ -73,21 +73,21 @@ describe Nylas::HttpClient do
 
   describe "HTTP errors" do
     http_codes_errors = {
-      400 => Nylas::InvalidRequest,
-      401 => Nylas::UnauthorizedRequest,
-      402 => Nylas::MessageRejected,
-      403 => Nylas::AccessDenied,
-      404 => Nylas::ResourceNotFound,
-      405 => Nylas::MethodNotAllowed,
-      410 => Nylas::ResourceRemoved,
-      418 => Nylas::TeapotError,
-      422 => Nylas::MailProviderError,
-      429 => Nylas::SendingQuotaExceeded,
-      500 => Nylas::InternalError,
-      501 => Nylas::EndpointNotYetImplemented,
-      502 => Nylas::BadGateway,
-      503 => Nylas::ServiceUnavailable,
-      504 => Nylas::RequestTimedOut
+      400 => NylasV2::InvalidRequest,
+      401 => NylasV2::UnauthorizedRequest,
+      402 => NylasV2::MessageRejected,
+      403 => NylasV2::AccessDenied,
+      404 => NylasV2::ResourceNotFound,
+      405 => NylasV2::MethodNotAllowed,
+      410 => NylasV2::ResourceRemoved,
+      418 => NylasV2::TeapotError,
+      422 => NylasV2::MailProviderError,
+      429 => NylasV2::SendingQuotaExceeded,
+      500 => NylasV2::InternalError,
+      501 => NylasV2::EndpointNotYetImplemented,
+      502 => NylasV2::BadGateway,
+      503 => NylasV2::ServiceUnavailable,
+      504 => NylasV2::RequestTimedOut
     }
 
     http_codes_errors.each do |code, error|
